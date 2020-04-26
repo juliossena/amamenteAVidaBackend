@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.julio.amamenteAVida.external.dto.ClientDTO;
-import com.julio.amamenteAVida.external.entity.Client;
+import com.julio.amamenteAVida.external.dto.response.ResponseBaseDTO;
 import com.julio.amamenteAVida.service.ClientService;
 
 
@@ -20,7 +20,7 @@ public class ClientController {
     private ClientService service;
 
     @PostMapping
-    public ResponseEntity<Client> createNewClient(@RequestBody final ClientDTO client) {
+    public ResponseEntity<ResponseBaseDTO> createNewClient(@RequestBody final ClientDTO client) {
         return ResponseEntity.ok(service.createNewClient(client));
     }
 
