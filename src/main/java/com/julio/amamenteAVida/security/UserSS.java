@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.julio.amamenteAVida.external.enums.Perfil;
+import com.julio.amamenteAVida.external.enums.Profile;
 
 public class UserSS implements UserDetails {
 	private static final long serialVersionUID = 1L;
@@ -22,7 +22,7 @@ public class UserSS implements UserDetails {
 
 	}
 
-	public UserSS(Integer id, String email, String senha, Set<Perfil> perfis) {
+	public UserSS(Integer id, String email, String senha, Set<Profile> perfis) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -69,7 +69,7 @@ public class UserSS implements UserDetails {
 		return true;
 	}
 
-	public boolean hasRole(Perfil perfil) {
+	public boolean hasRole(Profile perfil) {
 		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
 	}
 
