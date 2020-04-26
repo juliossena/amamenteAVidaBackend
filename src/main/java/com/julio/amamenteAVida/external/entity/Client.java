@@ -3,6 +3,7 @@ package com.julio.amamenteAVida.external.entity;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -71,6 +72,12 @@ public class Client implements Serializable {
 
     public void addProfile(final Profile perfil) {
         profiles.add(perfil.getCod());
+    }
+
+    public Set<Profile> getProfiles() {
+        return profiles.stream()
+            .map(x -> Profile.toEnum(x))
+            .collect(Collectors.toSet());
     }
 
 

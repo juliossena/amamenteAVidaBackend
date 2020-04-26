@@ -11,13 +11,13 @@ import com.julio.amamenteAVida.external.dto.ClientDTO;
 import com.julio.amamenteAVida.external.dto.response.ResponseBaseDTO;
 import com.julio.amamenteAVida.external.dto.response.ResponseClientDTO;
 import com.julio.amamenteAVida.external.entity.Client;
-import com.julio.amamenteAVida.external.repository.ClienteRepository;
+import com.julio.amamenteAVida.external.repository.ClientRepository;
 
 @Service
 public class ClientService {
 
     @Autowired
-    private ClienteRepository repository;
+    private ClientRepository repository;
 
     @Autowired
     private BCryptPasswordEncoder pe;

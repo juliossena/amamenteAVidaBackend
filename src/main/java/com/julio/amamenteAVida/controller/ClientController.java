@@ -24,4 +24,5 @@ public class ClientController {
         return ResponseEntity.ok(service.createNewClient(client));
     }
 
+
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.julio.amamenteAVida.external.entity.Client;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<Client, Integer> {
+public interface ClientRepository extends JpaRepository<Client, Integer> {
 
     Optional<Client> findByEmail(String email);
 

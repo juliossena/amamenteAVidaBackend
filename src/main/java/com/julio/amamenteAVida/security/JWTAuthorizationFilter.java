@@ -16,38 +16,40 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-	private JWTUtil jwtUtil;
+    private final JWTUtil jwtUtil;
 
-	private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-	public JWTAuthorizationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil,
-			UserDetailsService userDetailsService) {
-		super(authenticationManager);
-		this.jwtUtil = jwtUtil;
-		this.userDetailsService = userDetailsService;
-	}
+    public JWTAuthorizationFilter(final AuthenticationManager authenticationManager,
+            final JWTUtil jwtUtil, final UserDetailsService userDetailsService) {
+        super(authenticationManager);
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
+    }
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-		String header = request.getHeader("Authorization");
-		
-		if (header != null && header.startsWith("Bearer ")) {
-			UsernamePasswordAuthenticationToken auth = getAuthentication(header.substring(7));
-			if (auth != null) {
-				SecurityContextHolder.getContext().setAuthentication(auth);
-			}
-		}
-		chain.doFilter(request, response);
-	}
+    @Override
+    protected void doFilterInternal(final HttpServletRequest request,
+            final HttpServletResponse response, final FilterChain chain)
+            throws IOException, ServletException {
+        final String header = request.getHeader("Authorization");
 
-	private UsernamePasswordAuthenticationToken getAuthentication(String token) {
-		if (jwtUtil.tokenValido(token)) {
-			String email = jwtUtil.getEmail(token);
-			UserDetails user = userDetailsService.loadUserByUsername(email);
-			return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-		}
-		return null;
-	}
+        if (header != null && header.startsWith("Bearer ")) {
+            final UsernamePasswordAuthenticationToken auth = getAuthentication(header.substring(7));
+            if (auth != null) {
+                SecurityContextHolder.getContext()
+                    .setAuthentication(auth);
+            }
+        }
+        chain.doFilter(request, response);
+    }
+
+    private UsernamePasswordAuthenticationToken getAuthentication(final String token) {
+        if (jwtUtil.tokenValido(token)) {
+            final String email = jwtUtil.getEmail(token);
+            final UserDetails user = userDetailsService.loadUserByUsername(email);
+            return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        }
+        return null;
+    }
 
 }

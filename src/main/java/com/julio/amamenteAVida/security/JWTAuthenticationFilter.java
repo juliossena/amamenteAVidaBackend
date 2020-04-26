@@ -19,38 +19,41 @@ import com.julio.amamenteAVida.external.dto.CredenciaisDTO;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-	private AuthenticationManager authenticationManager;
-	private JWTUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+    private final JWTUtil jwtUtil;
 
-	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
-		this.authenticationManager = authenticationManager;
-		this.jwtUtil = jwtUtil;
-	}
+    public JWTAuthenticationFilter(final AuthenticationManager authenticationManager,
+            final JWTUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
 
-	@Override
-	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
-			throws AuthenticationException {
-		try {
-			// Converte as credenciais que vem no Body para o tipo CredenciaisDTO
-			CredenciaisDTO creds = new ObjectMapper().readValue(req.getInputStream(), CredenciaisDTO.class);
+    @Override
+    public Authentication attemptAuthentication(final HttpServletRequest req,
+            final HttpServletResponse res) throws AuthenticationException {
+        try {
+            final CredenciaisDTO creds =
+                    new ObjectMapper().readValue(req.getInputStream(), CredenciaisDTO.class);
 
-			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getEmail(),
-					creds.getSenha(), new ArrayList<>());
+            final UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(),
+                            new ArrayList<>());
 
-			Authentication auth = authenticationManager.authenticate(authToken);
-			return auth;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+            final Authentication auth = authenticationManager.authenticate(authToken);
+            return auth;
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Override
-	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
-			Authentication auth) throws IOException, ServletException {
+    @Override
+    protected void successfulAuthentication(final HttpServletRequest req,
+            final HttpServletResponse res, final FilterChain chain, final Authentication auth)
+            throws IOException, ServletException {
 
-		String email = ((UserSS) auth.getPrincipal()).getUsername();
-		String token = jwtUtil.generateToken(email);
-		res.addHeader("Authorization", "Bearer " + token);
-	}
+        final String email = ((UserSS) auth.getPrincipal()).getUsername();
+        final String token = jwtUtil.generateToken(email);
+        res.addHeader("Authorization", "Bearer " + token);
+    }
 
 }
