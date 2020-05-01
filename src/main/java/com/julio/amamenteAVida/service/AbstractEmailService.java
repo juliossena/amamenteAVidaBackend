@@ -18,10 +18,10 @@ public abstract class AbstractEmailService implements EmailService {
         sendEmail(sm);
     }
 
-    private SimpleMailMessage prepareNewPassordEmail(final Client cliente,
+    private SimpleMailMessage prepareNewPassordEmail(final Client client,
             final String codeValidation) {
         final SimpleMailMessage sm = new SimpleMailMessage();
-        sm.setTo(cliente.getEmail());
+        sm.setTo(client.getEmail());
         sm.setFrom(sender);
         sm.setSubject("Solicitação de nova senha");
         sm.setSentDate(new Date(System.currentTimeMillis()));

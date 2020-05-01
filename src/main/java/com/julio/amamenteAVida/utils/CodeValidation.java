@@ -8,7 +8,7 @@ public class CodeValidation {
 
     public static String newPassword(final Integer size) {
         final char[] vet = new char[size];
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < size; i++) {
             vet[i] = randomInteger();
         }
         return new String(vet);
