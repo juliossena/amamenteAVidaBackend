@@ -1,6 +1,7 @@
 package com.julio.amamenteAVida.external.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,12 +14,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.julio.amamenteAVida.external.dto.ClientDTO;
 import com.julio.amamenteAVida.external.enums.Profile;
+import com.julio.amamenteAVida.utils.DateUtils;
 
 import lombok.Data;
 
@@ -35,14 +35,12 @@ public class Client implements Serializable {
     @Column(unique = true)
     private String email;
     private String profession;
-    private Integer donationFrequency;
+    private LocalDate birthDate;
+    private String cpf;
+    private Boolean isDonor;
 
     @JsonIgnore
     private String password;
-
-    @ManyToOne
-    @JoinColumn(name = "milk_bank_id")
-    private MilkBank milkBank;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "PROFILES")
@@ -64,10 +62,11 @@ public class Client implements Serializable {
     public Client(final ClientDTO client) {
         name = client.getName();
         email = client.getEmail();
-        profession = client.getProfission();
-        password = client.getPassword();
+        profession = client.getProfession();
+        birthDate = DateUtils.convertStringUniversalFormatToDate(client.getBirthDate());
+        cpf = client.getCpf();
+        isDonor = client.getIsDonor();
         addProfile(Profile.CLIENT);
-        donationFrequency = client.getDonationFrequency();
     }
 
     public void addProfile(final Profile perfil) {

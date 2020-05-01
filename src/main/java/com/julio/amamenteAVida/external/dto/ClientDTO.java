@@ -11,9 +11,10 @@ public class ClientDTO {
     
     private String name;
     private String email;
-    private String profission;
     private String password;
-    private Integer idMilkBank;
-    private Integer donationFrequency;
+    private String profession;
+    private String birthDate;
+    private String cpf;
+    private Boolean isDonor;
 
 }

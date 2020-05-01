@@ -1,6 +1,7 @@
 package com.julio.amamenteAVida.external.dto.response;
 
 import com.julio.amamenteAVida.external.entity.Client;
+import com.julio.amamenteAVida.utils.DateUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,13 +18,17 @@ public class ResponseClientDTO extends ResponseBaseDTO {
     private String name;
     private String email;
     private String profession;
-    private Integer donationFrequency;
+    private String birthDate;
+    private String cpf;
+    private Boolean isDonor;
 
     public ResponseClientDTO(final Client client) {
         name = client.getName();
         email = client.getEmail();
         profession = client.getProfession();
-        donationFrequency = client.getDonationFrequency();
+        birthDate = DateUtils.convertLocalDateForStringUniversalFormat(client.getBirthDate());
+        cpf = client.getCpf();
+        isDonor = client.getIsDonor();
     }
 
 }
