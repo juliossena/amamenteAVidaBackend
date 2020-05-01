@@ -9,10 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CodeValidationClient {
 
     @Id
@@ -24,12 +28,18 @@ public class CodeValidationClient {
     private Client client;
     private String code;
     private LocalDateTime dateExpiration;
+    private Integer attempts;
 
     public CodeValidationClient(final Client client, final String code,
-            final LocalDateTime dateExpiration) {
+            final LocalDateTime dateExpiration, final Integer attempts) {
         this.client = client;
         this.code = code;
         this.dateExpiration = dateExpiration;
+        this.attempts = attempts;
+    }
+
+    public void addAttempts() {
+        attempts++;
     }
 
 }

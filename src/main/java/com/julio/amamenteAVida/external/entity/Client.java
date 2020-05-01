@@ -66,6 +66,7 @@ public class Client implements Serializable {
         birthDate = DateUtils.convertStringUniversalFormatToDate(client.getBirthDate());
         cpf = client.getCpf();
         isDonor = client.getIsDonor();
+        password = client.getPassword();
         addProfile(Profile.CLIENT);
     }
 
