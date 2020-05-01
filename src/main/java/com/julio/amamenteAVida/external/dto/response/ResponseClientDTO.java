@@ -16,13 +16,13 @@ public class ResponseClientDTO extends ResponseBaseDTO {
 
     private String name;
     private String email;
-    private String profission;
+    private String profession;
     private Integer donationFrequency;
 
     public ResponseClientDTO(final Client client) {
         name = client.getName();
         email = client.getEmail();
-        profission = client.getProfession();
+        profession = client.getProfession();
         donationFrequency = client.getDonationFrequency();
     }
 
