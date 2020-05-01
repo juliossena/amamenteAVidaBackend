@@ -2,7 +2,6 @@ package com.julio.amamenteAVida.exception.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.julio.amamenteAVida.exception.AuthorizationException;
 import com.julio.amamenteAVida.exception.DataIntegrityException;
+import com.julio.amamenteAVida.exception.ObjectNotFoundException;
 import com.julio.amamenteAVida.external.dto.response.ResponseBaseDTO;
 
 @ControllerAdvice
