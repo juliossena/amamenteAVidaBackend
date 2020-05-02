@@ -117,7 +117,7 @@ public class ClientService {
                 }
                 codeValidationClientRepository.saveAll(codes);
             }
-            throw new ObjectNotFoundException("Email ou código inválido");
+            throw new ObjectNotFoundException("O código informado é inválido");
         }
         codeValidationClientRepository.delete(code.get());
         if (code.get()
