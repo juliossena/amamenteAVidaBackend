@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.julio.amamenteAVida.exception.DataIntegrityException;
 import com.julio.amamenteAVida.exception.ObjectNotFoundException;
 import com.julio.amamenteAVida.external.dto.ClientDTO;
+import com.julio.amamenteAVida.external.dto.PasswordDTO;
 import com.julio.amamenteAVida.external.dto.response.ResponseBaseDTO;
 import com.julio.amamenteAVida.external.dto.response.ResponseClientDTO;
 import com.julio.amamenteAVida.external.entity.Client;
@@ -150,6 +151,18 @@ public class ClientService {
         final UserSS user = UserService.authenticated();
         final Optional<Client> client = repository.findByEmail(user.getUsername());
         if (client.isPresent()) {
+            return new ResponseClientDTO(client.get());
+        }
+        return null;
+    }
+
+    public ResponseClientDTO updatePassword(final PasswordDTO password) {
+        final UserSS user = UserService.authenticated();
+        final Optional<Client> client = repository.findByEmail(user.getUsername());
+        if (client.isPresent()) {
+            client.get()
+                .setPassword(pe.encode(password.getPassword()));
+            repository.save(client.get());
             return new ResponseClientDTO(client.get());
         }
         return null;
