@@ -1,6 +1,9 @@
 package com.julio.amamenteAVida.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -31,6 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JWTUtil jwtUtil;
 
+    @Value("${cors.allowed.origins}")
+    private String[] allowedOrigins;
+
     private static final String[] PUBLIC_MATCHERS = {"/h2-console/**"};
 
     private static final String[] PUBLIC_MATCHERS_GET = {"/client/forgot/**"};
@@ -52,23 +58,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .permitAll()
             .anyRequest()
             .authenticated();
-        http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
-        http.addFilter(
-                new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
+        http.addFilter(new JWTAuthenticationFilter(this.authenticationManager(), this.jwtUtil));
+        http.addFilter(new JWTAuthorizationFilter(this.authenticationManager(), this.jwtUtil,
+                this.userDetailsService));
         http.sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
     public void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-            .passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(this.userDetailsService)
+            .passwordEncoder(this.bCryptPasswordEncoder());
     }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Arrays.asList(this.allowedOrigins));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type",
+                "Accept", "Authorization", "token", "x-amzn-Remapped-Authorization", "dpvId"));
+        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Headers", "token",
+                "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, "
+                        + "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, x-amzn-Remapped-Authorization"));
+
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        source.registerCorsConfiguration("/**", configuration);
         return source;
 
     }
